@@ -13,6 +13,12 @@ Provides custom Ansible configuration that can directly be used for code deploym
 
         ansible routers -m ping
 
+- If the image doesn't have python installed by default, it is possible to use ansible to bootstrap it's own requirements by running
+
+        ansible-playbook bootstrap_python.yml
+
+    This command will run on all nodes (and fail on non reserved ones)
+
 - Deploy dependencies for simple experiment
     
         ansible-playbook example.yml

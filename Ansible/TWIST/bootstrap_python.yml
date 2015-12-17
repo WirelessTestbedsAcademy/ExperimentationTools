@@ -1,0 +1,26 @@
+---
+- name: Bootstrap python if missing
+  hosts: routers
+  gather_facts: no
+  tasks:
+  - name: Register if python is installed
+    raw: opkg list-installed python*
+    register: python_test
+    tags:
+      - package
+  - name: Update package list
+    raw: opkg update
+    when: "'python-logging' not in python_test.stdout"
+    tags:
+      - package
+  - name: Install python (raw)
+    raw: opkg install {{ item }}
+    with_items:
+      - python-base
+      - python-light
+      - python-openssl
+      - python-logging
+      - python-codecs
+    when: "'python-logging' not in python_test.stdout"
+    tags:
+      - package
