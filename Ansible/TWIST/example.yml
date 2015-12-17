@@ -1,0 +1,25 @@
+---
+- name: Example experiment deployment
+  hosts: tplink20:tplink04
+  tasks:
+  - name: Remove broken package repository
+    lineinfile:
+      dest: /etc/opkg/distfeeds.conf
+      state: absent
+      regexp: "chaos_calmer_tknpackages"
+
+  - name: Get system version
+    command: cat /etc/openwrt_version
+    register: openwrt_version
+    changed_when: false
+
+  - debug: var=openwrt_version.stdout
+
+  - name: Install openwrt web gui
+    opkg: name=luci state=present update_cache=yes
+
+  - name: Install some more packages
+    opkg: name={{ item }} state=present
+    with_items:
+    - iperf
+    - horst
