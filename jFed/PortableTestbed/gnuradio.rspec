@@ -1,0 +1,44 @@
+<?xml version='1.0'?>
+<rspec xmlns="http://www.geni.net/resources/rspec/3" type="request" generated_by="jFed RSpec Editor" generated="2016-02-15T12:12:13.104+01:00" xmlns:emulab="http://www.protogeni.net/resources/rspec/ext/emulab/1" xmlns:jfedBonfire="http://jfed.iminds.be/rspec/ext/jfed-bonfire/1" xmlns:delay="http://www.protogeni.net/resources/rspec/ext/delay/1" xmlns:jfed-command="http://jfed.iminds.be/rspec/ext/jfed-command/1" xmlns:client="http://www.protogeni.net/resources/rspec/ext/client/1" xmlns:jfed-ssh-keys="http://jfed.iminds.be/rspec/ext/jfed-ssh-keys/1" xmlns:jfed="http://jfed.iminds.be/rspec/ext/jfed/1" xmlns:sharedvlan="http://www.protogeni.net/resources/rspec/ext/shared-vlan/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geni.net/resources/rspec/3 http://www.geni.net/resources/rspec/3/request.xsd ">
+  <node client_id="usrp" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+barenuc1">
+    <sliver_type name="raw-pc">
+      <disk_image name="urn:publicid:IDN+portable.ilabt.iminds.be+image+portable-ilabt-iminds-be:gnuradio"/>
+    </sliver_type>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="307.0" y="68.5"/>
+  </node>
+  <node client_id="node0" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+nuc1">
+    <sliver_type name="raw-pc"/>
+    <services>
+      <execute shell="sh" command="sudo /usr/bin/gem install omf_ec"/>
+    </services>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="127.0" y="128.5"/>
+  </node>
+  <node client_id="node1" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+nuc2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="245.0" y="129.5"/>
+  </node>
+  <node client_id="node2" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+nuc3">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="356.0" y="130.5"/>
+  </node>
+  <node client_id="node3" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+nuc4">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="480.0" y="132.5"/>
+  </node>
+  <node client_id="node4" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+nuc5">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="129.0" y="176.5"/>
+  </node>
+  <node client_id="node5" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+nuc6">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="246.0" y="175.5"/>
+  </node>
+  <node client_id="node6" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+nuc7">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="357.0" y="175.5"/>
+  </node>
+  <node client_id="node7" exclusive="true" component_manager_id="urn:publicid:IDN+portable.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+portable.ilabt.iminds.be+node+nuc8">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="479.0" y="173.5"/>
+  </node>
+</rspec>
