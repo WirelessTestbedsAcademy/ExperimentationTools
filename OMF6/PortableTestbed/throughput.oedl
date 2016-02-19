@@ -14,7 +14,7 @@ defGroup('Sender', "node0.<SLICENAME>.portable-ilabt-iminds-be.portable.ilabt.im
   node.net.w0.ip = "192.168.0.2/24"
 end
 
-defGroup('Receiver', "node1.<EXPNAME>.portable-ilabt-iminds-be.portable.ilabt.iminds.be") do |node|
+defGroup('Receiver', "node1.<SLICENAME>.portable-ilabt-iminds-be.portable.ilabt.iminds.be") do |node|
   node.addApplication("iperf") do |app|
     app.setProperty('port', 5001)
     app.setProperty('server', true)
