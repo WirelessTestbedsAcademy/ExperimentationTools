@@ -1,0 +1,56 @@
+require '/root/iperf.rb'
+
+defGroup('Sender', "node0.<SLICENAME>.portable-ilabt-iminds-be.portable.ilabt.iminds.be") do |node|
+  node.addApplication("iperf") do |app|
+    app.setProperty('port', 5001)
+    app.setProperty('client', "192.168.0.3")
+    app.setProperty('interval', 1)
+    app.setProperty('time', 10000)
+  end
+  node.net.w0.mode = "master"
+  node.net.w0.type = 'a'
+  node.net.w0.channel = "36"
+  node.net.w0.essid = "demo"
+  node.net.w0.ip = "192.168.0.2/24"
+end
+
+defGroup('Receiver', "node1.<EXPNAME>.portable-ilabt-iminds-be.portable.ilabt.iminds.be") do |node|
+  node.addApplication("iperf") do |app|
+    app.setProperty('port', 5001)
+    app.setProperty('server', true)
+    app.setProperty('reportstyle', 'o')
+    app.setProperty('interval', 1)
+    app.measure('transfer', :samples=>1)
+  end
+  node.net.w0.mode = "managed"
+  node.net.w0.type = 'a'
+  node.net.w0.channel = "36"
+  node.net.w0.essid = "demo"
+  node.net.w0.ip = "192.168.0.3/24"
+end
+
+onEvent(:ALL_UP_AND_INSTALLED) do |event|
+  info "This is my first OMF experiment"
+  after 10 do
+    group('Receiver').startApplications
+    info "iPerf server is started..."
+  end
+  after 15 do
+    group('Sender').startApplications
+    info "iPerf client is started..."
+  end
+  after 60 do
+    allGroups.stopApplications
+    info "All my Applications are stopped now."
+  end
+  after 70 do
+    info "Force killing some apps just in case"
+    allGroups.exec('/usr/bin/killall hostapd ; /usr/bin/killall iperf-oml2 ; /usr/bin/killall wpa_supplicant')
+  end
+  after 80 do
+    info "Experiment is now finished"
+    Experiment.leave_memberships
+    Experiment.done
+  end
+
+end
