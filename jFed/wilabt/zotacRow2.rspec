@@ -1,0 +1,43 @@
+<?xml version='1.0'?>
+<rspec xmlns="http://www.geni.net/resources/rspec/3" type="request" generated_by="jFed RSpec Editor" generated="2016-02-29T17:52:39.324+01:00" xmlns:emulab="http://www.protogeni.net/resources/rspec/ext/emulab/1" xmlns:jfedBonfire="http://jfed.iminds.be/rspec/ext/jfed-bonfire/1" xmlns:delay="http://www.protogeni.net/resources/rspec/ext/delay/1" xmlns:jfed-command="http://jfed.iminds.be/rspec/ext/jfed-command/1" xmlns:client="http://www.protogeni.net/resources/rspec/ext/client/1" xmlns:jfed-ssh-keys="http://jfed.iminds.be/rspec/ext/jfed-ssh-keys/1" xmlns:jfed="http://jfed.iminds.be/rspec/ext/jfed/1" xmlns:sharedvlan="http://www.protogeni.net/resources/rspec/ext/shared-vlan/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geni.net/resources/rspec/3 http://www.geni.net/resources/rspec/3/request.xsd ">
+  <node client_id="zotacB2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacB2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="55.5" y="107.5"/>
+  </node>
+  <node client_id="zotacC2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacC2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="176.0" y="107.5"/>
+  </node>
+  <node client_id="zotacD2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacD2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="296.5" y="107.5"/>
+  </node>
+  <node client_id="zotacE2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacE2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="417.0" y="107.5"/>
+  </node>
+  <node client_id="zotacF2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacF2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="537.5" y="107.5"/>
+  </node>
+  <node client_id="zotacG2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacG2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="658.0" y="107.5"/>
+  </node>
+  <node client_id="zotacH2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacH2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="778.5" y="107.5"/>
+  </node>
+  <node client_id="zotacI2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacI2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="899.0" y="107.5"/>
+  </node>
+  <node client_id="zotacJ2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacJ2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="1019.5" y="107.5"/>
+  </node>
+  <node client_id="zotacK2" exclusive="true" component_manager_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab2.ilabt.iminds.be+node+zotacK2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="1140.0" y="107.5"/>
+  </node>
+</rspec>
