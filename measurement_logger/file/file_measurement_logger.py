@@ -1,4 +1,5 @@
 from measurement_logger.measurement_logger import MeasurementLogger
+import datetime
 
 
 class FileMeasurementLogger(MeasurementLogger):
@@ -15,7 +16,8 @@ class FileMeasurementLogger(MeasurementLogger):
         self.file_writer = None
 
     def log_measurement(self, name, value):
-        self.file_writer.write("%s;%s;%s;%s;%s\n" %( self.facility, self.program_name, self.group_name, name, str(value)))
+        print("{}: {} @ {} received msg {}".format(datetime.datetime.now(), self.program_name, self.facility, value))
+        self.file_writer.write("{}: {} @ {} received msg {}\n".format(datetime.datetime.now(), self.program_name, self.facility, value))
         pass
 
     def start_logging(self):

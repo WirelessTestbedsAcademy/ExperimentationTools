@@ -1,4 +1,5 @@
 import logging
+import datetime
 
 from measurement_logger.measurement_logger import MeasurementLogger
 
@@ -19,7 +20,7 @@ class STDOUTMeasurementLogger(MeasurementLogger):
         pass
 
     def log_measurement(self, name, value):
-        self.log.info("%s;%s;%s;%s;%s", self.facility, self.program_name, self.group_name, name, str(value))
+        print("{}: {} @ {} received msg {}".format(datetime.datetime.now(), self.program_name, self.facility, value))
         pass
 
     def start_logging(self):
