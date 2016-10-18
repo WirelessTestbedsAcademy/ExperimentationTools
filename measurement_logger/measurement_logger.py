@@ -23,7 +23,7 @@ class MeasurementLogger():
         pass
 
     @classmethod
-    def load_config(config):
+    def load_config(cls, config):
         measurement_config = config['measurement_config']
         module_name = measurement_config['module']
         class_name = measurement_config['class_name']
@@ -31,5 +31,5 @@ class MeasurementLogger():
         py_module = __import__(module_name)
         globals()[module_name] = py_module
         module_class = getattr(py_module, class_name)
-        module = module_class(**kwargs)
+        module = module_class(**measurement_config['kwargs'])
         return module
