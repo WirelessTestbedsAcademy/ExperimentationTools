@@ -3,27 +3,26 @@ import datetime
 
 
 class FileMeasurementLogger(MeasurementLogger):
-    def __init__(self, facility, program_name, group_name, filename, measurement_definitions = None ):
-        self.facility = facility
-        self.program_name = program_name
-        self.group_name = group_name
-        if measurement_definitions != None:
-            self.measurement_names = measurement_definitions.keys()
-        else:
-            self.measurement_names = []
+    def __init__(self, measurement_db_name, measurement_definitions, directory):
+        super(FileMeasurementLogger, self).__init__(measurement_db_name, measurement_definitions)
+        self.filenames = []
+        for key in self.measurement_definitions:
+            self.filenames.append(measurement_db_name + "_upi_" + key)
+        self.file_writers = {}
+        self.directory = directory
         pass
-        self.filename = filename
-        self.file_writer = None
 
     def log_measurement(self, name, value):
-        print("{}: {} @ {} received msg {}".format(datetime.datetime.now(), self.program_name, self.facility, value))
-        self.file_writer.write("{}: {} @ {} received msg {}\n".format(datetime.datetime.now(), self.program_name, self.facility, value))
+        self.log.debug("{};{}".format(datetime.datetime.now(), value))
+        self.file_writers[name].write("{};{}\n".format(datetime.datetime.now(), value))
         pass
 
     def start_logging(self):
-        self.file_writer = open(self.filename,'w')
+        for fname in self.filenames:
+            self.file_writers[fname] = open(self.directory + fname, 'a')
         pass
 
     def stop_logging(self):
-        self.file_writer.close()
+        for fname in self.filenames:
+            self.file_writers[fname].close()
         pass
