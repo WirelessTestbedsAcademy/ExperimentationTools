@@ -11,15 +11,17 @@ class MySQLMeasurementLogger(MeasurementLogger):
     def __init__(self, measurement_db_name, measurement_definitions, db_host, db_username='root', db_password='root'):
         super(MySQLMeasurementLogger, self).__init__(measurement_db_name, measurement_definitions)
         self.queries = {}
-        decoder = json.JSONDecoder(object_pairs_hook=collections.OrderedDict)
-        measurement_definitions = ast.literal_eval(measurement_definitions)
-        measurement_names = measurement_definitions.keys()
-        for key in measurement_names:
+        # decoder = json.JSONDecoder(object_pairs_hook=collections.OrderedDict)
+        # measurement_definitions = ast.literal_eval(measurement_definitions)
+        # measurement_names = measurement_definitions.keys()
+        for key in measurement_definitions:
             self.queries[key] = "INSERT INTO upi_" + key + " ("
-            measurement_keys = decoder.decode("{\"" + measurement_definitions[key].replace(" ", "\",\"").replace(":", "\":\"") + "\"}")
-            for element in measurement_keys:
-                self.queries[key] += element + ","
-            self.queries[key] = self.queries[key][:-1] + ") VALUES (" + ("%s," * len(measurement_keys))[:-1] + ")"
+            # measurement_keys = decoder.decode("{\"" + measurement_definitions[key].replace(" ", "\",\"").replace(":", "\":\"") + "\"}")
+            # for element in measurement_keys:
+            for element in measurement_definitions[key].split(" "):
+                self.queries[key] += element.split(":")[0] + ","
+            self.queries[key] = self.queries[key][:-1] + ") VALUES (" + ("%s," * len(measurement_definitions[key].split(" ")))[:-1] + ")"
+        print(self.queries)
         self.db_host = db_host
         self.db_username = db_username
         self.db_password = db_password
