@@ -1,1 +1,1 @@
-from . import std_measurement_logger
+from .stdout_measurement_logger import *

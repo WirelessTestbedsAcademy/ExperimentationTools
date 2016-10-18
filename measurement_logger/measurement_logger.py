@@ -21,3 +21,15 @@ class MeasurementLogger():
     @abc.abstractmethod
     def stop_logging(self):
         pass
+
+    @classmethod
+    def load_config(config):
+        measurement_config = config['measurement_config']
+        module_name = measurement_config['module']
+        class_name = measurement_config['class_name']
+        kwargs = measurement_config['class_name']
+        py_module = __import__(module_name)
+        globals()[module_name] = py_module
+        module_class = getattr(py_module, class_name)
+        module = module_class(**kwargs)
+        return module

@@ -1,1 +1,1 @@
-from . import mysql_measurement_logger
+from .mysql_measurement_logger import *
