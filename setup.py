@@ -21,5 +21,5 @@ setup(
     description='Measurement logger implementations',
     long_description='Implementation of different measurements loggers (OML, MySQL, stdout, etc).',
     keywords='measurement logger',
-    install_requires=['pymysql'],
+    install_requires=['pymysql', 'oml4py'],
 )
