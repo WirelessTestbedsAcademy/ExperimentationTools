@@ -4,8 +4,8 @@
   <node client_id="ansible" exclusive="true" component_manager_id="urn:publicid:IDN+wilab1.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab1.ilabt.iminds.be+node+nuc0-15">
     <sliver_type name="raw-pc"/>
     <services>
-	  <install install_path="/groups/wall2-ilabt-iminds-be/omf/pbecue" url="http://doc.ilabt.iminds.be/jfed-documentation-5.7/_static/install-ansible-wilab.tar.gz"/>
-      <execute shell="sh" command="cd /groups/wall2-ilabt-iminds-be/omf/pbecue &amp;&amp; sudo /bin/bash install-ansible.sh" jfed:finished_flag="/tmp/ansible-install-finished"/>
+	  <install install_path="/groups/wall2-ilabt-iminds-be/<YOUR PROJ NAME>" url="http://doc.ilabt.iminds.be/jfed-documentation-5.7/_static/install-ansible-wilab.tar.gz"/>
+      <execute shell="sh" command="cd /groups/wall2-ilabt-iminds-be/<YOUR PROJ NAME> &amp;&amp; sudo /bin/bash install-ansible.sh" jfed:finished_flag="/tmp/ansible-install-finished"/>
     </services>
     <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="207.0" y="197.5"/>
     <jfed:ansible inventory="/local"/>
@@ -13,7 +13,7 @@
        galaxy-command="sudo ansible-galaxy"
        inventory="/local/hosts"
        playbook-command="sudo ansible-playbook"
-       execute_playbook="/groups/wall2-ilabt-iminds-be/<YOUR PROJ NAME>/playbooks/install_wishful.yml"
+       execute_playbook="/groups/wall2-ilabt-iminds-be/<YOUR PROJ NAME>/install_wishful.yml"
        debug="true"
  />
   </node>
