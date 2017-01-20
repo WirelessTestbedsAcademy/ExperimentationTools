@@ -5,7 +5,7 @@ Example scripts for using Ansible on w-iLab.t (1 or 2)
 
 - Install Ansible
 
-        bash install_ansible.sh
+        sudo bash install_ansible.sh
 
 - Install the WiSHFUL framework using an Ansible playbook
 
