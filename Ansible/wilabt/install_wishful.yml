@@ -1,0 +1,96 @@
+---
+- hosts: all
+  tasks:
+    - name: Install requirements for WiSHFUL
+      sudo: yes
+      apt: pkg={{ item }} state=installed update_cache=true
+      with_items:
+      - wget
+      - git
+      - python
+      - python-virtualenv
+      - python-dev
+      - python3-dev
+      - python3-pip
+
+    - name: Make root dir writable
+      sudo: yes
+      file:
+        path: /root
+        mode: "u+rwx,g+rwx,o+rwx"
+
+    - name: Create WiSHFUL directory
+      sudo: yes
+      file:
+        path: /root/wishful
+        state: directory
+        mode: "u+rwx,g+rwx,o+rwx"
+
+    - name: Download repo file
+      get_url:
+        url: https://storage.googleapis.com/git-repo-downloads/repo
+        dest: /root/wishful/repo
+
+    - name: Make repo executable
+      file:
+        path: /root/wishful/repo
+        mode: "a+x"
+
+    - name: Init repo
+      command: /root/wishful/repo init -u https://github.com/wishful-project/manifests.git
+      args:
+        chdir: /root/wishful/
+
+    - name: Configure user-only manifest file
+      command: /root/wishful/repo init -m user.xml
+      args:
+        chdir: /root/wishful/
+
+    - name: get all repositories
+      command: /root/wishful/repo sync
+      args:
+        chdir: /root/wishful/
+
+    - name: create master branch on all
+      command: /root/wishful/repo start master --all
+      args:
+        chdir: /root/wishful/
+
+    - name: check status of all repositories
+      command: /root/wishful/repo status
+      args:
+        chdir: /root/wishful/
+
+    - name: Manually create the initial virtualenv
+      command: virtualenv /root/wishful/dev -p python3.4 creates="/root/wishful/dev/bin/activate"
+
+    - name: Install requirements
+      sudo: yes
+      pip:
+        name: pip
+        virtualenv: /root/wishful/dev
+        virtualenv_python: /root/wishful/dev/bin/python3.4
+        state: latest
+        executable: pip3
+        extra_args: -U
+
+    - name: Install pip setuptools
+      pip:
+        name: setuptools
+        virtualenv: /root/wishful/dev
+        virtualenv_python: /root/wishful/dev/bin/python3.4
+        executable: pip3
+        extra_args: -U
+
+    - replace:
+        dest: /root/wishful/.repo/manifests/requirements.txt
+        regexp: '\.'
+        replace: '/root/wishful'
+
+    - name: Install requirements
+      pip:
+        requirements: /root/wishful/.repo/manifests/requirements.txt
+        virtualenv: /root/wishful/dev
+        virtualenv_python: /root/wishful/dev/bin/python3.4
+        executable: pip3
+        extra_args: -U
