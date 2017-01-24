@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<rspec xmlns="http://www.geni.net/resources/rspec/3" type="request" generated_by="jFed RSpec Editor" generated="2017-01-23T16:10:08.620+01:00" xmlns:emulab="http://www.protogeni.net/resources/rspec/ext/emulab/1" xmlns:jfedBonfire="http://jfed.iminds.be/rspec/ext/jfed-bonfire/1" xmlns:delay="http://www.protogeni.net/resources/rspec/ext/delay/1" xmlns:jfed-command="http://jfed.iminds.be/rspec/ext/jfed-command/1" xmlns:client="http://www.protogeni.net/resources/rspec/ext/client/1" xmlns:jfed-ssh-keys="http://jfed.iminds.be/rspec/ext/jfed-ssh-keys/1" xmlns:jfed="http://jfed.iminds.be/rspec/ext/jfed/1" xmlns:sharedvlan="http://www.protogeni.net/resources/rspec/ext/shared-vlan/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geni.net/resources/rspec/3 http://www.geni.net/resources/rspec/3/request.xsd ">
+  <distribute_ssh_keypair xmlns="http://jfed.iminds.be/rspec/ext/jfed/1"/>
+  <node client_id="ansible" exclusive="true" component_manager_id="urn:publicid:IDN+wilab1.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab1.ilabt.iminds.be+node+nuc0-1">
+    <sliver_type name="raw-pc"/>
+    <services>
+	  <install install_path="/groups/wall2-ilabt-iminds-be/<YOUR_PROJ_NAME>" url="http://doc.ilabt.iminds.be/jfed-documentation-5.7/_static/install-ansible-wilab.tar.gz"/>
+      <execute shell="sh" command="cd /groups/wall2-ilabt-iminds-be/<YOUR_PROJ_NAME> &amp;&amp; sudo /bin/bash install-ansible.sh" jfed:finished_flag="/tmp/ansible-install-finished"/>
+      <ansible xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" playbook-command="ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook" execute_playbook="/groups/wall2-ilabt-iminds-be/<YOUR_PROJ_NAME>/playbooks/wishful.yml" inventory="/groups/wall2-ilabt-iminds-be/<YOUR_PROJ_NAME>/hosts" debug="true"/>
+    </services>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="207.0" y="197.5"/>
+  </node>
+  <node client_id="ap1" exclusive="true" component_manager_id="urn:publicid:IDN+wilab1.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab1.ilabt.iminds.be+node+nuc0-2">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="57.0" y="317.5"/>
+    <ansible_group xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" name="ap"/>
+  </node>
+  <node client_id="client1" exclusive="true" component_manager_id="urn:publicid:IDN+wilab1.ilabt.iminds.be+authority+cm" component_id="urn:publicid:IDN+wilab1.ilabt.iminds.be+node+nuc0-3">
+    <sliver_type name="raw-pc"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="318.5" y="316.5"/>
+    <ansible_group xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" name="client"/>
+  </node>
+</rspec>
