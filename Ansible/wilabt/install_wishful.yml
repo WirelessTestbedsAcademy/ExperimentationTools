@@ -62,14 +62,14 @@
         chdir: /root/wishful/
 
     - name: Manually create the initial virtualenv
-      command: virtualenv /root/wishful/dev -p python3.4 creates="/root/wishful/dev/bin/activate"
+      command: virtualenv /root/wishful/dev -p python3 creates="/root/wishful/dev/bin/activate"
 
     - name: Install requirements
       sudo: yes
       pip:
         name: pip
         virtualenv: /root/wishful/dev
-        virtualenv_python: /root/wishful/dev/bin/python3.4
+        virtualenv_python: /root/wishful/dev/bin/python3
         state: latest
         executable: pip3
         extra_args: -U
@@ -78,7 +78,7 @@
       pip:
         name: setuptools
         virtualenv: /root/wishful/dev
-        virtualenv_python: /root/wishful/dev/bin/python3.4
+        virtualenv_python: /root/wishful/dev/bin/python3
         executable: pip3
         extra_args: -U
 
@@ -87,10 +87,15 @@
         regexp: '\.'
         replace: '/root/wishful'
 
+    - replace:
+        dest: /root/wishful/.repo/manifests/requirements.txt
+        regexp: '/root/wishful/libs/aiocoap'
+        replace: '#/root/wishful/libs/aiocoap'
+
     - name: Install requirements
       pip:
         requirements: /root/wishful/.repo/manifests/requirements.txt
         virtualenv: /root/wishful/dev
-        virtualenv_python: /root/wishful/dev/bin/python3.4
+        virtualenv_python: /root/wishful/dev/bin/python3
         executable: pip3
         extra_args: -U
