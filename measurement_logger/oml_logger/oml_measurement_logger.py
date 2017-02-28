@@ -8,7 +8,7 @@ class OmlMeasurementLogger(MeasurementLogger):
     def __init__(self, measurement_db_name, measurement_definitions, facility):
         super(OmlMeasurementLogger, self).__init__(measurement_db_name, measurement_definitions)
         self.oml_instance = None
-        if facility == 'wilab':
+        if facility == 'wilab2':
             self.oml_instance = oml4py.OMLBase("upi", self.measurement_db_name, socket.gethostname(), "tcp:am.wilab2.ilabt.iminds.be:3004")
         elif facility == 'portable':
             self.oml_instance = oml4py.OMLBase("upi", self.measurement_db_name, socket.gethostname(), "tcp:oml.portable.ilabt.iminds.be:3003")

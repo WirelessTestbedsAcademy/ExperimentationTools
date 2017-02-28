@@ -1,9 +1,5 @@
 from measurement_logger.measurement_logger import MeasurementLogger
 import pymysql as PyMySQL
-import ast
-import _thread
-import collections
-import json
 
 
 class MySQLMeasurementLogger(MeasurementLogger):
