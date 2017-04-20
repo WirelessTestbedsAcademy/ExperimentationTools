@@ -3,12 +3,12 @@ import datetime
 
 
 class STDOUTMeasurementLogger(MeasurementLogger):
-    def __init__(self, measurement_db_name, measurement_definitions):
+    def __init__(self, measurement_db_name, measurement_definitions = None):
         super(STDOUTMeasurementLogger, self).__init__(measurement_db_name, measurement_definitions)
         pass
 
     def log_measurement(self, name, value):
-        self.log.info("{}_upi_{}: {};{}".format(self.measurement_db_name, name, datetime.datetime.now(), value))
+        self.log.info("{}_upi_{} : {}".format(self.measurement_db_name, name, value))
         pass
 
     def start_logging(self):
