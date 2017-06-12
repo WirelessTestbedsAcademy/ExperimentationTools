@@ -8,7 +8,7 @@ class STDOUTMeasurementLogger(MeasurementLogger):
         pass
 
     def log_measurement(self, name, value):
-        self.log.info("{}_upi_{} : {}".format(self.measurement_db_name, name, value))
+        self.log.info("{} ({}): {}".format(name, self.measurement_db_name, value))
         pass
 
     def start_logging(self):
