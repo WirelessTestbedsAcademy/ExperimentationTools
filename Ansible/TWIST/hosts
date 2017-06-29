@@ -1,6 +1,14 @@
 [bastion]
 api.twist.tu-berlin.de
 
+[nucs]
+nuc4
+nuc6
+nuc10
+nuc11
+nuc12
+nuc13
+
 [routers]
 
 [routers:children]
