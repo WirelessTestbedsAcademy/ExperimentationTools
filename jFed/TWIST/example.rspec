@@ -1,7 +1,13 @@
 <?xml version='1.0'?>
-<rspec xmlns="http://www.geni.net/resources/rspec/3" type="request" generated_by="jFed RSpec Editor" generated="2015-12-17T11:57:54.910+01:00" xmlns:emulab="http://www.protogeni.net/resources/rspec/ext/emulab/1" xmlns:jfedBonfire="http://jfed.iminds.be/rspec/ext/jfed-bonfire/1" xmlns:delay="http://www.protogeni.net/resources/rspec/ext/delay/1" xmlns:jfed-command="http://jfed.iminds.be/rspec/ext/jfed-command/1" xmlns:client="http://www.protogeni.net/resources/rspec/ext/client/1" xmlns:jfed-ssh-keys="http://jfed.iminds.be/rspec/ext/jfed-ssh-keys/1" xmlns:jfed="http://jfed.iminds.be/rspec/ext/jfed/1" xmlns:sharedvlan="http://www.protogeni.net/resources/rspec/ext/shared-vlan/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geni.net/resources/rspec/3 http://www.geni.net/resources/rspec/3/request.xsd ">
-  <node client_id="node0" exclusive="true" component_manager_id="urn:publicid:IDN+twist.tu-berlin.de+authority+am" component_id="urn:publicid:IDN+twist.tu-berlin.de+tplink+968a27a6-6e09-4d63-b6b6-2f3349978b96">
+<rspec xmlns="http://www.geni.net/resources/rspec/3" type="request" generated_by="jFed RSpec Editor" generated="2016-02-12T15:24:17.703+01:00" xmlns:emulab="http://www.protogeni.net/resources/rspec/ext/emulab/1" xmlns:jfedBonfire="http://jfed.iminds.be/rspec/ext/jfed-bonfire/1" xmlns:delay="http://www.protogeni.net/resources/rspec/ext/delay/1" xmlns:jfed-command="http://jfed.iminds.be/rspec/ext/jfed-command/1" xmlns:client="http://www.protogeni.net/resources/rspec/ext/client/1" xmlns:jfed-ssh-keys="http://jfed.iminds.be/rspec/ext/jfed-ssh-keys/1" xmlns:jfed="http://jfed.iminds.be/rspec/ext/jfed/1" xmlns:sharedvlan="http://www.protogeni.net/resources/rspec/ext/shared-vlan/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geni.net/resources/rspec/3 http://www.geni.net/resources/rspec/3/request.xsd ">
+  <node client_id="tplink01" exclusive="true" component_manager_id="urn:publicid:IDN+twist.tu-berlin.de+authority+am" component_id="urn:publicid:IDN+twist.tu-berlin.de+tplink+40938f38-1e2e-3d4b-b20f-cbf3aef08e47">
+    <sliver_type name="raw-pc">
+      <disk_image name="http://crewserver1/openwrt/openwrt-v0.4.1-5-g1ac6db6.chwalisz-ar71xx-generic-TLWDR4300-rootfs.tar.gz"/>
+    </sliver_type>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="136.0" y="95.5"/>
+  </node>
+  <node client_id="nuc5" exclusive="true" component_manager_id="urn:publicid:IDN+twist.tu-berlin.de+authority+am" component_id="urn:publicid:IDN+twist.tu-berlin.de+nuc+f74d2d18-32a8-3e23-9cc7-3c0fc5a6f3bc">
     <sliver_type name="raw-pc"/>
-    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="197.0" y="129.5"/>
+    <location xmlns="http://jfed.iminds.be/rspec/ext/jfed/1" x="395.0" y="108.5"/>
   </node>
 </rspec>
