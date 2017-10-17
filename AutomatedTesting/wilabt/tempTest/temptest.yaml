@@ -13,7 +13,7 @@
   # sudo: True
   tasks:
    - name: run_temptest_script
-     shell:  "/groups/wilabadmin/tempTest/run.sh"
+     shell:  "tempTest/run.sh"
      register: temp_test
      failed_when: "'ERROR' in temp_test.stdout_lines"
    - debug: var=temp_test.stdout_lines
