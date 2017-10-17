@@ -9,7 +9,7 @@
 ---
 # some pinging
 - name: temptest
-  hosts: wilab1machines
+  hosts: all
   # sudo: True
   tasks:
    - name: run_temptest_script
