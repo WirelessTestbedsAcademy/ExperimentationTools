@@ -1,0 +1,20 @@
+# ansible playbook, test file for ftester & wilab2
+# v0.1
+# author: vsercu@intec.ugent.be
+
+# - fixed lijst van nodes
+# - msp430 v4.7.3 op nodes
+# - python depts libclang versie ??
+
+---
+# some pinging
+- name: temptest
+  hosts: wilab1machines
+  # sudo: True
+  tasks:
+   - name: run_temptest_script
+     shell:  "/groups/wilabadmin/tempTest/run.sh"
+     register: temp_test
+     failed_when: "'ERROR' in temp_test.stdout_lines"
+   - debug: var=temp_test.stdout_lines
+    
