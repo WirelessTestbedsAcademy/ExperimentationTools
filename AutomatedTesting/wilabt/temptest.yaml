@@ -7,13 +7,20 @@
 # - python depts libclang versie ??
 
 ---
-# some pinging
+# distribute the git-scripts that were pulled by flsmon
+- name: distribute git files among nodes
+  hosts : all
+  tasks :
+    - name : distribute scripts
+      copy: src=/tmp/git-checkout-temptest/ dest=/tmp/git-checkout-temptest/ directory_mode=yes
+         
+# execute the run-script
 - name: temptest
-  hosts: wilab1machines
+  hosts: all
   # sudo: True
   tasks:
    - name: run_temptest_script
-     shell:  "/groups/wilabadmin/tempTest/run.sh"
+     shell:  "/tmp/git-checkout-temptest/tempTest/run.sh"
      register: temp_test
      failed_when: "'ERROR' in temp_test.stdout_lines"
    - debug: var=temp_test.stdout_lines
