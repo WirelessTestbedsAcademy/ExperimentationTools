@@ -12,7 +12,8 @@
   hosts : all
   tasks :
     - name : distribute scripts
-      copy: src=/tmp/git-checkout-temptest/ dest=/tmp/git-checkout-temptest/ directory_mode=yes
+      # copy assumes git clone https://github.com/WirelessTestbedsAcademy/ExperimentationTools.git
+      copy: src=./ExperimentationTools/AutomatedTesting/wilabt/tempTest/ dest=/tmp/git-checkout-temptest/ directory_mode=yes
          
 # execute the run-script
 - name: temptest
