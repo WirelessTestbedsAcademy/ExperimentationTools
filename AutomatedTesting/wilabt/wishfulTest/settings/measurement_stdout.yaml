@@ -1,0 +1,9 @@
+measurement_config:
+    module: stdout_measurement_logger
+    class_name: STDOUTMeasurementLogger
+    kwargs:
+        measurement_db_name: "testing"
+        measurement_definitions:
+            IEEE802154_event_macStats: "timeDiff:INT numTxRequest:INT numTxRequestFail:INT numTxAttempt:INT numTxSuccess:INT numTxFail:INT numTxBusy:INT numTxNoAck:INT numTxCollision:INT numRx:INT numBackoffs:INT report_id:INT"
+            app_rx_event: "application_id:INT sender_address:INT timestamp:INT inter_packet_delay:INT inter_packet_jitter:INT sequencenumber:INT numpacketloss:INT rssi:INT lqi:INT"
+        

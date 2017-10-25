@@ -1,0 +1,156 @@
+# ansible playbook for testing TAISC
+# v0.1
+# author: vsercu@intec.ugent.be
+
+---
+
+- name: Set up directories
+  hosts: testmachines
+  tasks:
+  - set_fact: host_interface='lo'
+  - set_fact: application="udp"
+  - set_fact: wishful_directory=/home/jan/TAISC/wishful/wishful
+  - set_fact: contiki_directory=/home/jan/TAISC/contiki
+  - set_fact: device_type="rm090"
+  #- set_fact: device_type="zoul BOARD=remote"
+  - set_fact: agent_config_file="examples/contiki/config/wilab2/agent_config.yaml"
+  - set_fact: global_config_file="examples/contiki/config/wilab2/global_cp_config.yaml"
+  - set_fact: nodes_config_file="examples/contiki/config/wilab2/nodes.yaml"
+  - set_fact: param_settings_file="settings/param_settings.csv"
+  - set_fact: event_settings_file="settings/event_settings.csv"
+  - set_fact: measurement_settings_file="settings/measurement_mysql.yaml"
+  - set_fact: experiment_duration=60
+  - set_fact: ansible_host_interface="ansible_{{ host_interface }}"
+  - set_fact: global_ip_address={{ hostvars[groups['testmachines'][0]][ansible_host_interface]['ipv4']['address'] }}
+  
+    
+- name: Kill all previous instances of python
+#  strategy : debug  ## remove from comment if you want to invoke debugger when something goes wrong
+  hosts: testmachines
+  tasks:
+  -  name: executing killall command...
+     command: /usr/bin/killall python
+     become_user: sudo
+     ignore_errors: yes
+     failed_when: false
+
+#~ - name : make the binary
+  #~ hosts: testmachines
+  #~ vars:
+    #~ nodeid : 1
+  #~ tasks: 
+    #~ - name: increment nodeid
+      #~ set_fact : nodeid = {{ nodeid | int + 1 }}
+      
+    #~ - name: debug
+      #~ debug: msg="Making bin for node{{ nodeid }} on host {{ inventory_hostname }}"
+      
+    #~ - name: Clean binary
+      #~ args : 
+         #~ chdir : "{{ contiki_directory }}/examples/wishful-ipv6/taisc/udp/"
+      #~ shell : "make TARGET={{ device_type }} clean"
+      
+    #~ - name: Make the bin
+      #~ args : 
+         #~ chdir : "{{ contiki_directory }}/examples/wishful-ipv6/taisc/udp/"
+      #~ shell : "make TARGET={{ device_type }} udp-example"
+      
+    #~ - name: Upload binary
+      #~ args : 
+         #~ chdir : "{{ contiki_directory }}/examples/wishful-ipv6/taisc/udp/"
+      #~ shell : "make TARGET={{ device_type }} MOTES=/dev/ttyUSB0 NODE_ID={{ nodeid }} udp-example.upload"
+
+
+- name : create nodes file (ruby yaml file) of nodes in question # like "ip_address_list: [127.0.0.1]"
+  hosts : testmachines
+  vars : 
+      node_ips : "{% set IP_ARR=[] %}
+                  {% for host in groups['testmachines'] %}
+                   {% if IP_ARR.insert(loop.index,hostvars[host][ansible_host_interface]['ipv4']['address']  ) %}
+                   {% endif %}
+                  {% endfor %}
+                  {{ 'ip_address_list : ' + IP_ARR | to_yaml }}"
+  tasks : 
+      - name : print them ips
+        debug : "msg={{ node_ips }}"
+      - copy: content="{{ node_ips }}" dest="{{ wishful_directory }}/examples/contiki/config/wilab2/nodes.yaml"
+  
+- name : generate wishful agent file based on ip addr and interface
+  hosts : testmachines
+  tasks:
+    - shell: 
+        truncate -s 0 {{ wishful_directory }}/{{ agent_config_file }};
+        while IFS='' read -r line;
+        do
+            echo "$line" \
+                | sed "s+GITAR_CONFIG+{{ agent_config_file }}+g" \
+                | sed "s/NODE_LIST/'lowpan0'/g" \
+                | sed "s/INTERFACE/{{ host_interface }}/g" \
+        >> {{ wishful_directory }}/{{ agent_config_file }};
+        done < {{ playbook_dir }}/templates/agent_config.yaml;
+        exit 0        
+      register: command_result
+      failed_when: command_result.stderr != ''
+      changed_when: command_result.stdout != ''
+
+- name : generate wishful global file based on interface
+  hosts : testmachines[0]
+  tasks:
+    - vars:
+        global_ip_address: "{{ hostvars[groups['testmachines'][0]][ansible_host_interface]['ipv4']['address'] }}"
+      shell: 
+        truncate -s 0 {{ wishful_directory }}/{{ global_config_file }};
+        while IFS='' read -r line;
+        do
+            echo "$line" \
+            | sed "s/IP/{{ global_ip_address }}/g" \
+            | sed "s/INTERFACE/{{ host_interface }}/g" \
+            >> {{ wishful_directory }}/{{ global_config_file }};
+        done < {{ playbook_dir }}/templates/global_config.yaml;
+        exit 0        
+      register: command_result
+      failed_when: command_result.stderr != ''
+      changed_when: command_result.stdout != ''
+        
+- name : start wishful agents
+  hosts : testmachines
+  tasks :
+    - name : wishful agents
+      args : 
+             chdir : "{{ wishful_directory }}"
+             executable: /bin/bash
+      shell: |
+          source './dev/bin/activate';
+          cd examples/contiki;
+          python agent.py --config {{ wishful_directory }}/{{ agent_config_file }} > /tmp/agent.log 2>&1 ;
+      async: "{{ experiment_duration }}"
+
+- name : execute global control program
+  hosts : testmachines[0]
+  tasks :
+      - name : wishful global
+        args : 
+            chdir : "{{ wishful_directory }}"
+            executable: /bin/bash
+        shell: |
+            source './dev/bin/activate';
+            cd examples/contiki;
+            python zigbee_scheduler/global_cp.py \
+                --config {{ wishful_directory }}/{{ global_config_file }} \
+                --nodes {{ wishful_directory }}/{{ nodes_config_file }} \
+                --application_name {{ application }} \
+                --param_config_file {{ playbook_dir }}/{{ param_settings_file }} \
+                --event_config_file {{ playbook_dir }}/{{ event_settings_file }} \
+                --measurements {{ playbook_dir }}/{{ measurement_settings_file }} > /tmp/global.log 2>&1 ;
+          python agent.py --config {{ wishful_directory }}/{{ agent_config_file }} > /tmp/agent.log 2>&1 ;
+        async: "{{ experiment_duration }}"
+
+- name: stop experiment
+  hosts : testmachines
+  tasks :
+    - shell: "sleep {{ experiment_duration }}"
+
+
+
+
+

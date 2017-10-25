@@ -1,0 +1,13 @@
+## WiSHFUL global control program config file
+
+controller:
+    name: "contiki_global_control"
+    info: "Example Contiki global control program"
+    dl: "tcp://IP:8990"
+    ul: "tcp://IP:8989"
+
+modules:
+    discovery:
+        module : wishful_module_discovery_pyre
+        class_name : PyreDiscoveryControllerModule
+        kwargs: {"iface":"INTERFACE", "groupName":"wishful_contiki", "downlink":"tcp://IP:8990", "uplink":"tcp://IP:8989"}
