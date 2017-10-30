@@ -25,8 +25,8 @@
   # sudo: True
   tasks:
    - name: run_temptest_script
-     shell:  "/tmp/git-checkout-temptest/run.sh"
+     command:  "/tmp/git-checkout-temptest/run.sh"
      register: temp_test
-     failed_when: "'ERROR' in temp_test.stdout_lines"
+     failed_when: "temp_test.rc != 0 or 'ERROR' in temp_test.stdout_lines"
    - debug: var=temp_test.stdout_lines
     
