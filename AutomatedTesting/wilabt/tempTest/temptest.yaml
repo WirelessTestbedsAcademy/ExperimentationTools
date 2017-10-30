@@ -9,16 +9,21 @@
 ---
 # distribute the git-scripts that were pulled by flsmon
 - name: distribute git files among nodes
-  hosts : all
-  tasks :
-    - name : distribute scripts
+  hosts: all
+  tasks:
+    - name: distribute scripts
       # copy assumes git clone https://github.com/WirelessTestbedsAcademy/ExperimentationTools.git
+      # note that file permissions (execute etc) are NOT kept by copy
       copy: 
         src: ./ 
         dest: /tmp/git-checkout-temptest/ 
         directory_mode: '0775'
         force: yes
-         
+    - name: fix permissions
+      file: 
+         mode: 'uog+x'
+         dest: '/tmp/git-checkout-temptest/run.sh'
+
 # execute the run-script
 - name: temptest
   hosts: all
