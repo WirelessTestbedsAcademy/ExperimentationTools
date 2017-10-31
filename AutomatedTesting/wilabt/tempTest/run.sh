@@ -20,6 +20,10 @@ DEV=ERROR
 DEVNAME=ERROR
 TEMP=ERROR
 
+if [ ! -e RESULTS ]; then
+	mkdir -p RESULTS
+fi
+
 function finalize()
 {
 	result=`printf "====%s, %s, %s, %s, %s, %s, %s, %s, %s ====\n" $CONTROLINT $CONTROLIP $HOST $YEPKITID $DEV $DEVNAME $TEMP $EXP $DATE`
@@ -36,8 +40,12 @@ HOST=`dig +noall +answer -x $CONTROLIP | awk '{print $5}' | sed 's/\.$//'`
 if [ -z "`dpkg -l | grep libhidapi-libusb0`" ]; then
 	sudo /share/yepkit-USB-hub/missing-lib.sh
 fi 
+
 YEPKITID=`/share/yepkit-USB-hub/ykushcmd -l | grep Serial | awk '{print $7}'`
-if [ -z $YEPKITID ]; then finalize; fi 
+if [ -z $YEPKITID ]; then 
+	YEPKITID=ERROR
+	finalize
+fi 
 sudo /share/yepkit-USB-hub/ykushcmd -d 1
 sudo /share/yepkit-USB-hub/ykushcmd -d 2
 sudo /share/yepkit-USB-hub/ykushcmd -d 3
@@ -47,10 +55,17 @@ sudo /share/yepkit-USB-hub/ykushcmd -u 1
 
 echo "will try motelist..."
 sleep 1
-DEV=`motelist -c | cut -d ',' -f 2`
+DEV=`motelist -c | tail -n 1 | grep '/dev/' | cut -d ',' -f 2`
+if [ -z $DEV ]; then 
+	DEV=ERROR
+	finalize
+fi 
 DEVNAME=`motelist -c | cut -d ',' -f 1`
-if [ -z $DEV ]; then finalize; fi 
 
-sudo python cc2538-bsl.py -e -w -v -a 0x00202000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 tempTest.bin
-TEMP=`sudo timeout 3 ./serialdump-linux -b115200 $DEV | grep Temp | tail -n 1 | cut -f 3 -d ' '`
+python cc2538-bsl.py -e -w -v -a 0x00202000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 tempTest.bin 2>/dev/null
+TEMP=`timeout 3 ./serialdump-linux -b115200 $DEV 2>/dev/null | grep Temp | tail -n 1 | cut -f 3 -d ' '`
+
+if [ -z "${TEMP##*[!0-9]*}" ]; then 
+	TEMP=ERROR
+fi
 finalize
