@@ -5,6 +5,8 @@ HOSTNAME=`hostname`
 EXP=`echo $HOSTNAME | cut -d '.' -f 2`
 DATE=`date | sed -e 's/ /_/g'`
 sudo adduser `whoami` dialout
+newgrp dialout
+newgrp `whoami`
 
 CONTROLINT=ERROR
 CONTROLIP=ERROR
