@@ -4,10 +4,12 @@ PWD=`pwd`
 HOSTNAME=`hostname`
 EXP=`echo $HOSTNAME | cut -d '.' -f 2`
 DATE=`date | sed -e 's/ /_/g'`
+
+PRIGRP=`groups | awk '{print $1}'`
 sudo adduser `whoami` dialout
 newgrp dialout << EONG1
 EONG1
-newgrp `whoami` << EONG2
+newgrp $PRIGRP << EONG2
 EONG2
 
 CONTROLINT=ERROR
