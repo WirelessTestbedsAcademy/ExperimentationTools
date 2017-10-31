@@ -18,7 +18,7 @@ TEMP=ERROR
 
 function finalize()
 {
-	result=`printf "%s, %s, %s, %s, %s, %s, %s, %s, %s \n" $CONTROLINT $CONTROLIP $HOST $YEPKITID $DEV $DEVNAME $TEMP $EXP $DATE`
+	result=`printf "====%s, %s, %s, %s, %s, %s, %s, %s, %s ====\n" $CONTROLINT $CONTROLIP $HOST $YEPKITID $DEV $DEVNAME $TEMP $EXP $DATE`
 	echo $result
 	echo $result >> RESULTS/$HOST.$EXP
 	exit 0
