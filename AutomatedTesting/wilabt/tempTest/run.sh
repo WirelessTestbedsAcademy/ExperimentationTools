@@ -8,9 +8,10 @@ DATE=`date | sed -e 's/ /_/g'`
 PRIGRP=`groups | awk '{print $1}'`
 sudo adduser `whoami` dialout
 newgrp dialout << EONG1
-EONG1
+
 newgrp $PRIGRP << EONG2
-EONG2
+
+groups
 
 CONTROLINT=ERROR
 CONTROLIP=ERROR
@@ -69,3 +70,10 @@ if [ -z "${TEMP##*[!0-9]*}" ]; then
 	TEMP=ERROR
 fi
 finalize
+
+EONG2
+
+EONG1
+
+sudo deluser `whoami` dialout
+
