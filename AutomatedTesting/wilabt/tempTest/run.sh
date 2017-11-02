@@ -38,7 +38,6 @@ fi
 
 YEPKITID=`/share/yepkit-USB-hub/ykushcmd -l | grep Serial | awk '{print $7}'`
 if [ -z $YEPKITID ]; then
-	echo YEPKITID=ERROR 
 	YEPKITID=ERROR
 	finalize
 fi
