@@ -5,13 +5,7 @@ HOSTNAME=`hostname`
 EXP=`echo $HOSTNAME | cut -d '.' -f 2`
 DATE=`date | sed -e 's/ /_/g'`
 
-PRIGRP=`groups | awk '{print $1}'`
 sudo adduser `whoami` dialout
-newgrp dialout << EONG1
-
-newgrp $PRIGRP << EONG2
-
-groups
 
 CONTROLINT=ERROR
 CONTROLIP=ERROR
@@ -20,6 +14,10 @@ YEPKITID=ERROR
 DEV=ERROR
 DEVNAME=ERROR
 TEMP=ERROR
+
+CONTROLINT=`route -n | awk '{print $4 " " $8}' | grep UG | awk '{print $2}'`
+CONTROLIP=`ifconfig $CONTROLINT | grep 'inet addr' | awk '{print $2} ' | cut -d ':' -f 2` 
+HOST=`dig +noall +answer -x $CONTROLIP | awk '{print $5}' | sed 's/\.$//'`
 
 if [ ! -e RESULTS ]; then
 	mkdir -p RESULTS
@@ -30,23 +28,21 @@ function finalize()
 	result=`printf "====%s, %s, %s, %s, %s, %s, %s, %s, %s ====\n" $CONTROLINT $CONTROLIP $HOST $YEPKITID $DEV $DEVNAME $TEMP $EXP $DATE`
 	echo $result
 	echo $result >> RESULTS/$HOST.$EXP
+	sudo deluser `whoami` dialout
 	exit 0
 }
-
-
-CONTROLINT=`route -n | awk '{print $4 " " $8}' | grep UG | awk '{print $2}'`
-CONTROLIP=`ifconfig $CONTROLINT | grep 'inet addr' | awk '{print $2} ' | cut -d ':' -f 2` 
-HOST=`dig +noall +answer -x $CONTROLIP | awk '{print $5}' | sed 's/\.$//'`
 
 if [ -z "`dpkg -l | grep libhidapi-libusb0`" ]; then
 	sudo /share/yepkit-USB-hub/missing-lib.sh
 fi 
 
 YEPKITID=`/share/yepkit-USB-hub/ykushcmd -l | grep Serial | awk '{print $7}'`
-if [ -z $YEPKITID ]; then 
+if [ -z $YEPKITID ]; then
+	echo YEPKITID=ERROR 
 	YEPKITID=ERROR
 	finalize
-fi 
+fi
+ 
 sudo /share/yepkit-USB-hub/ykushcmd -d 1
 sudo /share/yepkit-USB-hub/ykushcmd -d 2
 sudo /share/yepkit-USB-hub/ykushcmd -d 3
@@ -63,17 +59,11 @@ if [ -z $DEV ]; then
 fi 
 DEVNAME=`motelist -c | cut -d ',' -f 1`
 
-python cc2538-bsl.py -e -w -v -a 0x00202000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 tempTest.bin 2>/dev/null
-TEMP=`timeout 3 ./serialdump-linux -b115200 $DEV 2>/dev/null | grep Temp | tail -n 1 | cut -f 3 -d ' '`
+sg dialout "python cc2538-bsl.py -e -w -v -a 0x00202000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 tempTest.bin 2>/dev/null"
+TEMP=`sg dialout "timeout 3 ./serialdump-linux -b115200 $DEV 2>/dev/null | grep Temp | tail -n 1 | cut -f 3 -d ' '"`
 
 if [ -z "${TEMP##*[!0-9]*}" ]; then 
 	TEMP=ERROR
 fi
 finalize
-
-EONG2
-
-EONG1
-
-sudo deluser `whoami` dialout
 
