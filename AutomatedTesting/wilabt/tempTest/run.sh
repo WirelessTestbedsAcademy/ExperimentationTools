@@ -1,6 +1,9 @@
 #!/bin/bash
 export LC_ALL=C
 PWD=`pwd`
+MYDIR=`dirname $0`
+echo will switch from $PWD to $MYDIR
+cd $MYDIR
 HOSTNAME=`hostname`
 EXP=`echo $HOSTNAME | cut -d '.' -f 2`
 DATE=`date | sed -e 's/ /_/g'`
