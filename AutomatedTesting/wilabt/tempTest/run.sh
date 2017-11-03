@@ -59,7 +59,8 @@ if [ -z $DEV ]; then
 fi 
 DEVNAME=`motelist -c | cut -d ',' -f 1`
 
-sg dialout "python cc2538-bsl.py -e -w -v -a 0x00202000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 tempTest.bin"
+sg dialout "python cc2538-bsl.py -e -w -v -a 0x00202000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 tempTest.bin 2>&1"
+sg dialout "timeout 3 ./serialdump-linux -b115200 $DEV 2>&1"
 TEMP=`sg dialout "timeout 3 ./serialdump-linux -b115200 $DEV | grep Temp | tail -n 1 | cut -f 3 -d ' '"`
 echo "TEMP = $TEMP"
 
