@@ -1,0 +1,7 @@
+if [ ! -e ncat ]; then
+	wget https://nmap.org/dist/ncat-7.60-1.x86_64.rpm
+	rpm2cpio ncat-7.60-1.x86_64.rpm | cpio -idmv
+	cp ./usr/bin/ncat .
+	rm -rf ncat-7.60-1.x86_64.rpm
+	sudo chmod -R u+x ncat
+fi
