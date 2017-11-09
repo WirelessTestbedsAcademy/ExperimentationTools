@@ -1,0 +1,15 @@
+#!/bin/bash
+port=57404
+RSSISERVERHOST=localhost
+SERVERAVAILABLE=0
+RETRIES=60
+while [ "$SERVERAVAILABLE" -eq "0" -a "$RETRIES" -gt "0" ]; do
+	if [ ! "" = "`sudo /usr/bin/nmap -PN -n $RSSISERVERHOST -sU -p $port -g $port 2>/dev/null | grep 'udp open' 2>/dev/null`" ]; then
+		SERVERAVAILABLE=1
+	else
+		sleep 1
+		RETRIES=$((RETRIES - 1))
+		echo $RETRIES
+	fi
+done
+
