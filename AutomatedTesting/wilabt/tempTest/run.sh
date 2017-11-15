@@ -31,6 +31,9 @@ function finalize()
 {
 	result=`printf "=====%s, %s, %s, %s, %s, %s, %s, %s, %s =====\n" $CONTROLINT $CONTROLIP $HOST $YEPKITID $DEV $DEVNAME $TEMP $EXP $DATE`
 	echo $result
+	if [ ! -z "`echo $result | grep ERROR`" ]; then
+		echo ERROR
+	fi
 	echo $result >> RESULTS/$HOST.$EXP
 	sudo deluser `whoami` dialout
 	exit 0
