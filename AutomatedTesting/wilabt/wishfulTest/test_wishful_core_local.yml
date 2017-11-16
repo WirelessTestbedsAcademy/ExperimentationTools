@@ -73,8 +73,14 @@
         executable: pip3
 
     - name: Test WiSHFUL Core
-      command: ~/.local/bin/pytest /root/wishful/tests/core/local_test.py
-      args:
-        chdir: /root/wishful/tests/core/
+      hosts: all
+      tasks:
+       - name: run_wishful_core_test
+         command: ~/.local/bin/pytest /root/wishful/tests/core/local_test.py
+         args:
+           chdir: /root/wishful/tests/core/
+         register: wishful_core_test
+         failed_when: "wishful_core_test.rc != 0 or 'failed' in wishful_core_test.stdout_lines"
+       - debug: var=wishful_core_test.stdout_lines
 
 
