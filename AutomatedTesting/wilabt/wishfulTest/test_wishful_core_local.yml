@@ -75,7 +75,6 @@
         executable: pip3
 
     - name: Test WiSHFUL Core
-      become: true
       command: ~/.local/bin/pytest /root/wishful/tests/core/local_test.py
       args:
         chdir: /root/wishful/tests/core/
