@@ -63,13 +63,11 @@
         replace: '/root/wishful'
 
     - name: Install requirements
-      become: true
       pip:
         requirements: /root/wishful/.repo/manifests/requirements.txt
         executable: pip3
 
     - name: Install test requirements
-      become: true
       pip:
         requirements: /root/wishful/tests/requirements.txt
         executable: pip3
