@@ -29,7 +29,7 @@
         dest: /root/wishful/repo
 
     - name: Make repo executable
-       become: true
+      become: true
       file:
         path: /root/wishful/repo
         mode: "a+x"
