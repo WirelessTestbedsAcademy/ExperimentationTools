@@ -16,68 +16,57 @@
         mode: "u+rwx,g+rwx,o+rwx"
 
     - name: Create WiSHFUL directory
-      become: true
       file:
         path: /root/wishful
         state: directory
         mode: "u+rwx,g+rwx,o+rwx"
 
     - name: Download repo file
-      become: true
       get_url:
         url: https://storage.googleapis.com/git-repo-downloads/repo
         dest: /root/wishful/repo
 
     - name: Make repo executable
-      become: true
       file:
         path: /root/wishful/repo
         mode: "a+x"
 
     - name: Init repo
-      become: true
       command: /root/wishful/repo init -u https://github.com/wishful-project/manifests.git
       args:
         chdir: /root/wishful/
 
     - name: Configure user-only manifest file
-      become: true
       command: /root/wishful/repo init -m user.xml
       args:
         chdir: /root/wishful/
 
     - name: get all repositories
-      become: true
       command: /root/wishful/repo sync
       args:
         chdir: /root/wishful/
 
     - name: create master branch on all
-      become: true
       command: /root/wishful/repo start master --all
       args:
         chdir: /root/wishful/
 
     - name: check status of all repositories
-      become: true
       command: /root/wishful/repo status
       args:
         chdir: /root/wishful/
 
     - name: Install requirements
-      become: true
       pip:
         requirements: /root/wishful/.repo/manifests/requirements.txt
         executable: pip3
 
     - name: Install test requirements
-      become: true
       pip:
         requirements: /root/wishful/tests/requirements.txt
         executable: pip3
 
     - name: Test WiSHFUL Core
-      become: true
       command: ~/.local/bin/pytest /root/wishful/tests/core/local_test.py
       args:
         chdir: /root/wishful/tests/core/
