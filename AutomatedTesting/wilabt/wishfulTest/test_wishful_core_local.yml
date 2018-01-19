@@ -65,7 +65,6 @@
         chdir: /root/wishful/
 
     - replace:
-        become: true
         dest: /root/wishful/.repo/manifests/requirements.txt
         regexp: '\.'
         replace: '/root/wishful'
