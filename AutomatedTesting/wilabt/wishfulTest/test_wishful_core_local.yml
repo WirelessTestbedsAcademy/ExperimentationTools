@@ -64,11 +64,6 @@
       args:
         chdir: /root/wishful/
 
-    - replace:
-        dest: /root/wishful/.repo/manifests/requirements.txt
-        regexp: '\.'
-        replace: '/root/wishful'
-
     - name: Install requirements
       become: true
       pip:
