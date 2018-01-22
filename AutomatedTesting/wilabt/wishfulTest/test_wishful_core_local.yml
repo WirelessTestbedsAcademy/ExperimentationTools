@@ -56,6 +56,11 @@
       args:
         chdir: /root/wishful/
 
+    - replace:
+        dest: /root/wishful/.repo/manifests/requirements.txt
+        regexp: '\.'
+        replace: '/root/wishful'
+
     - name: Install requirements
       become: true
       pip:
@@ -68,7 +73,7 @@
         executable: pip3
 
     - name: Test WiSHFUL Core
-      command: ~/.local/bin/pytest /root/wishful/tests/core/local_test.py
+      command: /usr/local/bin/pytest /root/wishful/tests/core/local_test.py
       args:
         chdir: /root/wishful/tests/core/
       register: wishful_core_test
