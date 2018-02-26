@@ -2,25 +2,20 @@
 - hosts: all
   tasks:
     - name: Install requirements for WiSHFUL
-      sudo: yes
+      become: true
       apt: pkg={{ item }} state=installed update_cache=true
       with_items:
       - wget
       - git
-      - python
-      - python-virtualenv
-      - python-dev
-      - python3-dev
       - python3-pip
 
     - name: Make root dir writable
-      sudo: yes
+      become: true
       file:
         path: /root
         mode: "u+rwx,g+rwx,o+rwx"
 
     - name: Create WiSHFUL directory
-      sudo: yes
       file:
         path: /root/wishful
         state: directory
@@ -61,41 +56,13 @@
       args:
         chdir: /root/wishful/
 
-    - name: Manually create the initial virtualenv
-      command: virtualenv /root/wishful/dev -p python3 creates="/root/wishful/dev/bin/activate"
-
-    - name: Install requirements
-      sudo: yes
-      pip:
-        name: pip
-        virtualenv: /root/wishful/dev
-        virtualenv_python: /root/wishful/dev/bin/python3
-        state: latest
-        executable: pip3
-        extra_args: -U
-
-    - name: Install pip setuptools
-      pip:
-        name: setuptools
-        virtualenv: /root/wishful/dev
-        virtualenv_python: /root/wishful/dev/bin/python3
-        executable: pip3
-        extra_args: -U
-
     - replace:
         dest: /root/wishful/.repo/manifests/requirements.txt
         regexp: '\.'
         replace: '/root/wishful'
 
-    - replace:
-        dest: /root/wishful/.repo/manifests/requirements.txt
-        regexp: '/root/wishful/libs/aiocoap'
-        replace: '#/root/wishful/libs/aiocoap'
-
     - name: Install requirements
+      become: true
       pip:
         requirements: /root/wishful/.repo/manifests/requirements.txt
-        virtualenv: /root/wishful/dev
-        virtualenv_python: /root/wishful/dev/bin/python3
         executable: pip3
-        extra_args: -U
