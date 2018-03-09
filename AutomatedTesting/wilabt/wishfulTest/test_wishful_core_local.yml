@@ -66,3 +66,18 @@
       pip:
         requirements: /root/wishful/.repo/manifests/requirements.txt
         executable: pip3
+
+    - name: Install test requirements
+      pip:
+        requirements: /root/wishful/tests/requirements.txt
+        executable: pip3
+
+    - name: Test WiSHFUL Core
+      command: /usr/local/bin/pytest /root/wishful/tests/core/local_test.py
+      args:
+        chdir: /root/wishful/tests/core/
+      register: wishful_core_test
+      failed_when: "wishful_core_test.rc != 0 or 'failed' in wishful_core_test.stdout_lines"
+    - debug: var=wishful_core_test.stdout_lines
+
+
