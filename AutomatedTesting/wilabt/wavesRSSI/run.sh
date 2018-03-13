@@ -139,11 +139,14 @@ if [ ! -z `fping -aq -r 1 -i 50 $RSSISERVERHOST 2>/dev/null` ]; then
 		preparePipeAndSocket "RSSIserver" $RSSISERVERPORT PIPE_RSSISERVER
 fi
 
-sg dialout "python cc2538-bsl.py -e -w -v -a 0x00206000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 $WSNBIN 2>&1"
+
 
 echo PIPE_RSSISERVER = $PIPE_RSSISERVER
 if [ ! -z $PIPE_RSSISERVER ]; then
-	sg dialout "$BIN//parseSerialDump.pl $HOSTSHORT $DEV 2>/dev/null > $PIPE_RSSISERVER"
+	while true;  do
+        	sg dialout "python $BIN/cc2538-bsl.py -e -w -v -a 0x00206000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 $WSNBIN 2>&1"
+		sg dialout "$BIN/parseSerialDump.pl $HOSTSHORT $DEV 2>/dev/null > $PIPE_RSSISERVER"
+	done
 fi
 
 finalize
