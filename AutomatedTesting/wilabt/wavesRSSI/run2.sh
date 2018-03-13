@@ -75,13 +75,12 @@ if [ "$NODE" == "node0" ]; then
 	#unattended mysqld install
 	export DEBIAN_FRONTEND=noninteractive
 	sudo -E apt-get -q -y install mysql-server
-	mysqladmin -u root password wavesrssi
-	mysql -uroot -pwavesrssi < initwavesdb.sql
+	sudo mysqladmin -u root password wavesrssi
+	sudo mysql -uroot -pwavesrssi < initwavesdb.sql
 	#make it available over the network
 	sudo sed 's/\(^.*bind-address.*$\)/#\1/' -i /etc/mysql/mysql.conf.d/mysqld.cnf
 	sudo service mysql restart
 else
-	sudo -E apt-get -q -y install mysql-client
 	#wait until the server becomes available
 	SERVERAVAILABLE=0
 	RETRIES=60
@@ -97,7 +96,9 @@ else
 fi
 
 sudo adduser `whoami` dialout
-sg dialout "python cc2538-bsl.py -e -w -v -a 0x00206000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 $WSNBIN 2>&1"
-sg dialout "$BIN/parseSerialDump.pl $HOSTSHORT $DEV $RSSISERVERHOST 
+while true;  do
+	sg dialout "python cc2538-bsl.py -e -w -v -a 0x00206000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 $WSNBIN 2>&1"
+	sg dialout "$BIN/parseSerialDump.pl $HOSTSHORT $DEV $RSSISERVERHOST"
+done
 finalize
 
