@@ -18,7 +18,7 @@ my $myTable = shift || 'wavesrssi';
 my $dsn = "DBI:mysql:database=$myDatabase;host=$myDBHost;port=$myDBPort";
 my $dbh = DBI->connect($dsn, $myDBuser, $myDBpassword);
 my $sth = $dbh->prepare(
-	"INSERT INTO  $myTable (node, radio, mcs, rssi, lqi) VALUES ('$myHost',?,?,?,?)" )
+	"INSERT INTO  $myTable (node, radio, mcs, txAddr, rssi, lqi) VALUES ('$myHost',?,?,?,?,?)" )
         or die "prepare statement failed: $dbh->errstr()";
 
 my $cmd = qq{./serialdump-linux -b115200 $myDev 2>&1};
@@ -27,8 +27,8 @@ open(CMD, "$cmd |")  or die "Cannot run $cmd\n";
 while (my $line = <CMD>) {
 	if ($line =~ /WAVES/) {
 		my @field = split(/,/, $line);
-		 $sth->execute($field[1], $field[2], $field[3], $field[4]) or die "execution failed: $dbh->errstr()";
-		#my $values = "$myHost, $field[1], $field[2], $field[3], $field[4]"; 
+		 $sth->execute($field[1], $field[2], $field[3], $field[4], $field[5]) or die "execution failed: $dbh->errstr()";
+		#my $values = "$myHost, $field[1], $field[2], $field[3], $field[4], $field[5]"; 
 		#print "$values"; 
 	}
 }
