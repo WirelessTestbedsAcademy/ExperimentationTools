@@ -1,0 +1,13 @@
+controller_config:
+  downlink: "tcp://{{ ip }}:8990"
+  uplink: "tcp://{{ ip }}:8989"
+
+hosts:
+{% for host in groups['test_hosts'] %}
+  - {"ip": {{ host }}, "port": 567890}
+{% endfor %}
+
+wifi:
+{% for host in groups['test_wifi_hosts'] %}
+  - {"ip": {{ host }}, "port": 567890}
+{% endfor %}
