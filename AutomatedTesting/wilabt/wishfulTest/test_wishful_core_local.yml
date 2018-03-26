@@ -3,7 +3,7 @@
   tasks:
     - name: Install requirements for WiSHFUL
       become: true
-      apt: pkg={{ item }} state=installed update_cache=true
+      apt: pkg={{ item }} state=present update_cache=true
       with_items:
       - wget
       - git
