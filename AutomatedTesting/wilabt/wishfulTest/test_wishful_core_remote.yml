@@ -89,7 +89,7 @@
   tasks:
     - name: start agents on remote hosts
       become: true
-      shell: /usr/bin/python3 /root/wishful/tests/common/remote_agent_host > /dev/null 2>&1 &
+      shell: /usr/bin/screen -DmS wishfulRemote -L -d -m /usr/bin/python3 /root/wishful/tests/common/remote_agent_host ; sleep 1
 
 - hosts: test_controllers
   tasks:
@@ -110,4 +110,10 @@
       register: wishful_core_test_remote
       failed_when: "wishful_core_test_remote.rc != 0 or 'failed' in wishful_core_test_remote.stdout_lines"
     - debug: var=wishful_core_test_remote.stdout_lines
+
+- hosts: test_hosts
+  tasks:
+    - name: kill wishfulRemote screen sessions
+      become: true
+      shell: /usr/bin/screen -X -S wishfulRemote quit
 
