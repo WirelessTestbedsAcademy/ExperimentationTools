@@ -1,0 +1,112 @@
+---
+- hosts: all
+  tasks:
+    - name: Install requirements for WiSHFUL
+      become: true
+      apt: pkg={{ item }} state=present update_cache=true
+      with_items:
+      - wget
+      - git
+      - python3-pip
+      - hostapd
+      - iperf3
+
+    - name: Make root dir writable
+      become: true
+      file:
+        path: /root
+        mode: "u+rwx,g+rwx,o+rwx"
+
+    - name: Create WiSHFUL directory
+      file:
+        path: /root/wishful
+        state: directory
+        mode: "u+rwx,g+rwx,o+rwx"
+
+    - name: Download repo file
+      get_url:
+        url: https://storage.googleapis.com/git-repo-downloads/repo
+        dest: /root/wishful/repo
+
+    - name: Make repo executable
+      file:
+        path: /root/wishful/repo
+        mode: "a+x"
+
+    - name: Init repo
+      command: /root/wishful/repo init -u https://github.com/wishful-project/manifests.git
+      args:
+        chdir: /root/wishful/
+
+    - name: Configure user-only manifest file
+      command: /root/wishful/repo init -m user.xml
+      args:
+        chdir: /root/wishful/
+
+    - name: get all repositories
+      command: /root/wishful/repo sync
+      args:
+        chdir: /root/wishful/
+
+    - name: create master branch on all
+      command: /root/wishful/repo start master --all
+      args:
+        chdir: /root/wishful/
+
+    - name: check status of all repositories
+      command: /root/wishful/repo status
+      args:
+        chdir: /root/wishful/
+
+    - replace:
+        dest: /root/wishful/.repo/manifests/requirements.txt
+        regexp: '\.'
+        replace: '/root/wishful'
+
+    - name: Install requirements
+      become: true
+      pip:
+        requirements: /root/wishful/.repo/manifests/requirements.txt
+        executable: pip3
+
+    - name: Install extra packages
+      become: true
+      pip:
+        name: dnspython scapy pyhostapdconf iperf3
+
+    - name: kill hostapd where it is still running
+      ignore_errors: yes
+      become: true
+      command: /usr/bin/killall hostapd
+
+    - name: Unzip hostapd config
+      ignore_errors: yes
+      become: true
+      command: /bin/gunzip /usr/share/doc/hostapd/examples/hostapd.conf.gz
+
+    - name: Copy hostapd conf
+      become: true
+      copy:
+        src: /usr/share/doc/hostapd/examples/hostapd.conf
+        dest: /etc/hostapd.conf
+
+- hosts: test_hosts
+  tasks:
+    - name: start agents on remote hosts
+      become: true
+      shell: /usr/bin/screen -DmS wishfulRemote -L -d -m /usr/bin/python3 /root/wishful/examples/wilab/iperf/wishful_simple_agent --config /root/wishful/examples/wilab/iperf/agent_config.yaml ; sleep 1
+
+- hosts: test_controllers
+  tasks:
+    - name: Start WiFi example
+      command: /usr/bin/python3 /root/wishful/examples/wilab/iperf/wishful_simple_controller
+      register: wishful_core_test_wifi
+      failed_when: "wishful_core_test_wifi.rc != 0 or 'failed' in wishful_core_test_wifi.stdout_lines"
+    - debug: var=wishful_core_test_wifi.stdout_lines
+
+- hosts: test_hosts
+  tasks:
+    - name: kill wishfulRemote screen sessions
+      become: true
+      shell: /usr/bin/screen -X -S wishfulRemote quit
+
