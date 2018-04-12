@@ -101,7 +101,7 @@
     - name: Start WiFi example
       command: /usr/bin/python3 /root/wishful/examples/wilab/iperf/wishful_simple_controller
       register: wishful_core_test_wifi
-      failed_when: "wishful_core_test_wifi.rc != 0 or 'failed' in wishful_core_test_wifi.stdout_lines"
+      failed_when: "wishful_core_test_wifi.rc != 0 or 'failed' in wishful_core_test_wifi.stdout_lines"  or 'could not connect' in wishful_core_test_wifi.stdout_lines"
     - debug: var=wishful_core_test_wifi.stdout_lines
 
 - hosts: test_hosts
