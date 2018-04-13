@@ -84,12 +84,6 @@
       become: true
       command: /bin/gunzip /usr/share/doc/hostapd/examples/hostapd.conf.gz
 
-    - name: Copy hostapd conf
-      become: true
-      copy:
-        src: /usr/share/doc/hostapd/examples/hostapd.conf
-        dest: /etc/hostapd.conf
-
 - hosts: test_hosts
   tasks:
     - name: start agents on remote hosts
