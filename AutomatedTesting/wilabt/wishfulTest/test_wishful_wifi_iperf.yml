@@ -73,6 +73,7 @@
       become: true
       pip:
         name: dnspython scapy pyhostapdconf iperf3
+        executable: pip3
 
     - name: kill hostapd where it is still running
       ignore_errors: yes
