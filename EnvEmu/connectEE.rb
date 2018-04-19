@@ -11,7 +11,7 @@ PORT = 9003
 DEVICE = '/dev/ee' # TESTBED WILAB2 IS USB1!!! usb0 there is EE
 BAUDRATE = 230400       # baudrate for EE
 #SFEXEC = '/opt/tinyos-2.1.1/support/sdk/c/sf/sf'
-SFEXEC = './sf'
+SFEXEC = 'sf'
 
 LISTENPORT = 10003
 
