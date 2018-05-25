@@ -27,6 +27,7 @@
 # execute the run-script
 - name: temptest
   hosts: all
+  become: true
   # sudo: True
   tasks:
    - name: run_temptest_script
