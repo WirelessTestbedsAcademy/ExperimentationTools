@@ -73,9 +73,15 @@ ls -la
 chmod a+x serialdump-linux
 
 sg dialout "python cc2538-bsl.py -e -w -v -a 0x00202000 -p $DEV -i ab:cd:00:ff:fe:00:00:1 tempTest.bin 2>&1"
-sg dialout "timeout 3 ./serialdump-linux -b115200 $DEV 2>&1"
-sleep 5
-TEMP=`sg dialout "timeout 3 ./serialdump-linux -b115200 $DEV | grep Temp | tail -n 1 | cut -f 3 -d ' '"`
+#sg dialout "timeout 3 ./serialdump-linux -b115200 $DEV 2>&1"
+/usr/bin/screen -DmS serialdump1 -L -d -m ./serialdump-linux -b115200 $DEV 2>&1
+sleep 3
+/usr/bin/screen -X -S serialdump1 quit
+/usr/bin/screen -DmS serialdump2 -L -d -m ./serialdump-linux -b115200 $DEV 2>&1 | grep Temp | tail -n 1 | cut -f 3 -d ' '
+sleep 3
+/usr/bin/screen -X -S serialdump2 quit
+TEMP=`/usr/bin/strings screenlog.0 |  grep Temp | tail -n 1 | cut -f 3 -d ' '`
+
 echo "TEMP = $TEMP"
 
 if [ -z "${TEMP##*[!0-9]*}" ]; then 
