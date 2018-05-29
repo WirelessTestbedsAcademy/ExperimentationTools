@@ -32,4 +32,4 @@ open two terminals:
 2nd terminal: ```./oedl.sh ```
 Gnuplot is greedy with the foucs of your windows manager
 
-I you don't get a fresh, please repeat cmds for terminal 1 and 2
+I you don't get a fresh plot, please repeat cmds for terminal 1 and 2
