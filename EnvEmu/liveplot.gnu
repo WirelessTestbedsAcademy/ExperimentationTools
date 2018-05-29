@@ -1,3 +1,4 @@
+set terminal wxt size 1850,500
 set autoscale xfix
 #set xrange [0:*]
 #set xrange [0:500]
