@@ -72,6 +72,12 @@
       pip:
         requirements: /root/wishful/tests/requirements.txt
         executable: pip3
+        
+    - name: Install extra packages
+      become: true
+      pip:
+        name: dnspython scapy pyhostapdconf iperf3
+        executable: pip3
 
     - name: Test WiSHFUL Core
       command: /usr/local/bin/pytest /root/wishful/tests/core/local_test.py
