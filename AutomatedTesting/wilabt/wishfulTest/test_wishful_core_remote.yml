@@ -74,6 +74,7 @@
         executable: pip3
 
     - name: ntpdate sync for testing delayed calls
+      ignore_errors: yes
       become: true
       shell: /usr/sbin/ntpdate time.google.com
 
