@@ -101,7 +101,7 @@
 
     - name: Generate controller config file (including remote_hosts)
       template:
-        src: templates/controller_config.yaml.jn2
+        src: /root/wishful/experimentation_tools/AutomatedTesting/wilabt/wishfulTest/templates/controller_config.yaml.jn2
         dest: /root/wishful/tests/remote_hosts.yaml
 
     - name: Test WiSHFUL Core Remote
