@@ -72,6 +72,12 @@
       pip:
         requirements: /root/wishful/tests/requirements.txt
         executable: pip3
+        
+    - name: Install extra packages
+      become: true
+      pip:
+        name: dnspython scapy
+        executable: pip3
 
     - name: ntpdate sync for testing delayed calls
       ignore_errors: yes
