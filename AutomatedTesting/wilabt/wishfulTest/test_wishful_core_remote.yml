@@ -84,14 +84,6 @@
       become: true
       shell: /usr/sbin/ntpdate time.google.com
 
-    - name: Test WiSHFUL Core
-      command: /usr/local/bin/pytest /root/wishful/tests/core/local_test.py
-      args:
-        chdir: /root/wishful/tests/core/
-      register: wishful_core_test
-      failed_when: "wishful_core_test.rc != 0 or 'failed' in wishful_core_test.stdout_lines"
-    - debug: var=wishful_core_test.stdout_lines
-
 - hosts: test_hosts
   tasks:
     - name: start agents on remote hosts
@@ -106,9 +98,8 @@
         name: dnspython
 
     - name: Generate controller config file (including remote_hosts)
-      ignore_errors: yes
       template:
-        src: /root/wishful/experimentation_tools/AutomatedTesting/wilabt/wishfulTest/templates/controller_config.yaml.jn2
+        src: controller_config.yaml.jn2
         dest: /root/wishful/tests/remote_hosts.yaml
 
     - name: Test WiSHFUL Core Remote
