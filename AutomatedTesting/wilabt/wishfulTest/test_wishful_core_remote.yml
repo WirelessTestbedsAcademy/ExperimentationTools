@@ -97,9 +97,15 @@
       pip:
         name: dnspython
 
+    - name: checkout ExperimentationTools repo
+      git:
+        repo: 'https://github.com/WirelessTestbedsAcademy/ExperimentationTools.git'
+        dest: /root/checkout
+
     - name: Generate controller config file (including remote_hosts)
+      become: true
       template:
-        src: controller_config.yaml.jn2
+        src: /root/checkout/AutomatedTesting/wilabt/wishfulTest/templates/controller_config.yaml.jn2
         dest: /root/wishful/tests/remote_hosts.yaml
 
     - name: Test WiSHFUL Core Remote
