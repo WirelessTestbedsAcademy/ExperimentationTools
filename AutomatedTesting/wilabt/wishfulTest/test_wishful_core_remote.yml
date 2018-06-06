@@ -102,13 +102,20 @@
         repo: 'https://github.com/WirelessTestbedsAcademy/ExperimentationTools.git'
         dest: /root/checkout
 
+    - name: Make root dir writable
+      become: true
+      file:
+        path: /root/checkout
+        mode: "u+rwx,g+rwx,o+rwx"
+
     - name: Generate controller config file (including remote_hosts)
       become: true
       template:
-        src: /root/checkout/AutomatedTesting/wilabt/wishfulTest/templates/controller_config.yaml.jn2
+        src: ../templates/controller_config.yaml.jn2
         dest: /root/wishful/tests/remote_hosts.yaml
 
     - name: Test WiSHFUL Core Remote
+      become: true
       command: /usr/local/bin/pytest -s /root/wishful/tests/core/remote_test.py
       args:
         chdir: /root/wishful/tests/core/
