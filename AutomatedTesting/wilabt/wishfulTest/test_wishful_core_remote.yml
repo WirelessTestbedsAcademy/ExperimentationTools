@@ -99,7 +99,6 @@
         executable: pip3
 
     - name: Generate controller config file (including remote_hosts)
-      become: true
       template:
         src: ../templates/controller_config.yaml.jn2
         dest: /root/wishful/tests/remote_hosts.yaml
