@@ -96,6 +96,7 @@
       become: true
       pip:
         name: dnspython
+        executable: pip3
 
     - name: checkout ExperimentationTools repo
       git:
