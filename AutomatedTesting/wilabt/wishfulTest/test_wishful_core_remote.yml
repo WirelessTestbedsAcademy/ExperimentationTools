@@ -98,17 +98,6 @@
         name: dnspython
         executable: pip3
 
-    - name: checkout ExperimentationTools repo
-      git:
-        repo: 'https://github.com/WirelessTestbedsAcademy/ExperimentationTools.git'
-        dest: /root/checkout
-
-    - name: Make root dir writable
-      become: true
-      file:
-        path: /root/checkout
-        mode: "u+rwx,g+rwx,o+rwx"
-
     - name: Generate controller config file (including remote_hosts)
       become: true
       template:
