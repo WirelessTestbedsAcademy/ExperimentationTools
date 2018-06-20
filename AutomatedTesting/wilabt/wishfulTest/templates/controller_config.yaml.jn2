@@ -1,7 +1,7 @@
 controller_config:
 {% for host in groups['test_controllers'] %}
-  downlink: "tcp://{{ lookup('dig', host) }}:8990"
-  uplink: "tcp://{{ lookup('dig', host) }}:8989"
+  downlink: "tcp://{{ lookup('dig', host, '@10.0.0.4') }}:8990"
+  uplink: "tcp://{{ lookup('dig', host, '@10.0.0.4') }}:8989"
 {% endfor %}
 
 hosts:
