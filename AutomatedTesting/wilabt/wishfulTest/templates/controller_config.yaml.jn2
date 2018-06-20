@@ -6,10 +6,10 @@ controller_config:
 
 hosts:
 {% for host in groups['test_hosts'] %}
-  - {"ip": {{ host }}, "port": 567890}
+  - {"ip": {{ hostvars[host].ansible_ssh_host }}, "port": 567890}
 {% endfor %}
 
 wifi:
 {% for host in groups['test_wifi_hosts'] %}
-  - {"ip": {{ host }}, "port": 567890}
+  - {"ip": {{ hostvars[host].ansible_ssh_host }}, "port": 567890}
 {% endfor %}
