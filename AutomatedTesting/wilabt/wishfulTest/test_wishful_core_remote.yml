@@ -65,19 +65,19 @@
       become: true
       pip:
         requirements: /root/wishful/.repo/manifests/requirements.txt
-        executable: pip3.4
+        executable: pip3
 
     - name: Install test requirements
       become: true
       pip:
         requirements: /root/wishful/tests/requirements.txt
-        executable: pip3.4
+        executable: pip3
         
     - name: Install extra packages
       become: true
       pip:
         name: dnspython scapy
-        executable: pip3.4
+        executable: pip3
 
     - name: ntpdate sync for testing delayed calls
       ignore_errors: yes
@@ -96,7 +96,7 @@
       become: true
       pip:
         name: dnspython
-        executable: pip3.4
+        executable: pip3
 
     - name: Generate controller config file (including remote_hosts)
       template:
