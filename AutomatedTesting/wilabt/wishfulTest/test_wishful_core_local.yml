@@ -78,6 +78,11 @@
       pip:
         name: dnspython scapy pyhostapdconf iperf3
         executable: pip3
+        
+    - replace:
+        dest: /root/wishful/libs/pyre/pyre/zre_msg.py
+        regexp: 'socket_type'
+        replace: 'type'
 
     - name: Test WiSHFUL Core
       become: true
