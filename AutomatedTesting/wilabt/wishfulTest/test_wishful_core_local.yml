@@ -90,7 +90,7 @@
       args:
         chdir: /root/wishful/tests/core/
       register: wishful_core_test
-      failed_when: "wishful_core_test.rc != 0 or 'failed' in wishful_core_test.stdout_lines"
+      failed_when: "'failed' in wishful_core_test.stdout_lines"
     - debug: var=wishful_core_test.stdout_lines
 
 
