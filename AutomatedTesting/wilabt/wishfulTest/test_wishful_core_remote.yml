@@ -72,18 +72,17 @@
       pip:
         requirements: /root/wishful/tests/requirements.txt
         executable: pip3
+        
+    - name: Install extra packages
+      become: true
+      pip:
+        name: dnspython scapy
+        executable: pip3
 
     - name: ntpdate sync for testing delayed calls
+      ignore_errors: yes
       become: true
       shell: /usr/sbin/ntpdate time.google.com
-
-    - name: Test WiSHFUL Core
-      command: /usr/local/bin/pytest /root/wishful/tests/core/local_test.py
-      args:
-        chdir: /root/wishful/tests/core/
-      register: wishful_core_test
-      failed_when: "wishful_core_test.rc != 0 or 'failed' in wishful_core_test.stdout_lines"
-    - debug: var=wishful_core_test.stdout_lines
 
 - hosts: test_hosts
   tasks:
@@ -97,13 +96,15 @@
       become: true
       pip:
         name: dnspython
+        executable: pip3
 
     - name: Generate controller config file (including remote_hosts)
       template:
-        src: controller_config.yaml.jn2
+        src: ../templates/controller_config.yaml.jn2
         dest: /root/wishful/tests/remote_hosts.yaml
 
     - name: Test WiSHFUL Core Remote
+      become: true
       command: /usr/local/bin/pytest -s /root/wishful/tests/core/remote_test.py
       args:
         chdir: /root/wishful/tests/core/

@@ -8,6 +8,8 @@
       - wget
       - git
       - python3-pip
+      - hostapd
+      - iperf3
 
     - name: Make root dir writable
       become: true
@@ -67,30 +69,39 @@
         requirements: /root/wishful/.repo/manifests/requirements.txt
         executable: pip3
 
-    - name: Install test requirements
-      become: true
-      pip:
-        requirements: /root/wishful/tests/requirements.txt
-        executable: pip3
-        
     - name: Install extra packages
       become: true
       pip:
         name: dnspython scapy pyhostapdconf iperf3
         executable: pip3
-        
-    - replace:
-        dest: /root/wishful/libs/pyre/pyre/zre_msg.py
-        regexp: 'socket_type'
-        replace: 'type'
 
-    - name: Test WiSHFUL Core
+    - name: kill hostapd where it is still running
+      ignore_errors: yes
       become: true
-      command: /usr/local/bin/pytest /root/wishful/tests/core/local_test.py
-      args:
-        chdir: /root/wishful/tests/core/
-      register: wishful_core_test
-      failed_when: "'failed' in wishful_core_test.stdout_lines"
-    - debug: var=wishful_core_test.stdout_lines
+      command: /usr/bin/killall hostapd
 
+    - name: Unzip hostapd config
+      ignore_errors: yes
+      become: true
+      command: /bin/gunzip /usr/share/doc/hostapd/examples/hostapd.conf.gz
+
+- hosts: test_hosts
+  tasks:
+    - name: start agents on remote hosts
+      become: true
+      shell: /usr/bin/screen -DmS wishfulRemote -L -d -m /usr/bin/python3 /root/wishful/examples/wilab/iperf/wishful_simple_agent --config /root/wishful/examples/wilab/iperf/agent_config.yaml ; sleep 1
+
+- hosts: test_controllers
+  tasks:
+    - name: Start WiFi example
+      command: /usr/bin/python3 /root/wishful/examples/wilab/iperf/wishful_simple_controller
+      register: wishful_core_test_wifi
+      failed_when: "wishful_core_test_wifi.rc != 0 or 'failed' in wishful_core_test_wifi.stdout_lines or 'could not connect' in wishful_core_test_wifi.stdout_lines"
+    - debug: var=wishful_core_test_wifi.stdout_lines
+
+- hosts: test_hosts
+  tasks:
+    - name: kill wishfulRemote screen sessions
+      become: true
+      shell: /usr/bin/screen -X -S wishfulRemote quit
 

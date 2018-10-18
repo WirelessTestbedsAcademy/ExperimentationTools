@@ -1,15 +1,15 @@
 controller_config:
 {% for host in groups['test_controllers'] %}
-  downlink: "tcp://{{ lookup('dig', host) }}:8990"
-  uplink: "tcp://{{ lookup('dig', host) }}:8989"
+  downlink: "tcp://{{ ansible_eth0.ipv4.address }}:8990"
+  uplink: "tcp://{{ ansible_eth0.ipv4.address }}:8989"
 {% endfor %}
 
 hosts:
 {% for host in groups['test_hosts'] %}
-  - {"ip": {{ host }}, "port": 567890}
+  - {"ip": {{ hostvars[host].ansible_ssh_host }}, "port": 567890}
 {% endfor %}
 
 wifi:
 {% for host in groups['test_wifi_hosts'] %}
-  - {"ip": {{ host }}, "port": 567890}
+  - {"ip": {{ hostvars[host].ansible_ssh_host }}, "port": 567890}
 {% endfor %}

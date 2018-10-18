@@ -16,6 +16,7 @@ SFEXEC = 'sf'
 LISTENPORT = 10003
 
 $EEreportCnt=0
+$lastTimestamp = 0
 
 ########################################################################################
 ## WARNING: WATCH OUT FOR DUPLICATE NAMES!! => OML WILL CRASH ON CREATING TABLE IN DB
@@ -29,6 +30,7 @@ require 'socket'      # Sockets are in standard library
 #require "/var/lib/gems/1.8/gems/oml4r-2.9.1/lib/oml4r.rb"
 #require "./oml4r.rb"
 require 'thread'
+require 'time'
 
 #require "/usr/share/omf-common-5.4/omf-common/mobject.rb"
 
@@ -173,8 +175,24 @@ def grabAvgCurrVolt(packet, am, plotdat)
     else
         arr.pop 						# remove the last field (that is "" when H* is matched to <nothing left>)
     end
-    plotdat.puts "#{$EEreportCnt} #{((arr[9]*70)/4095).round(3)} #{((arr[11] *34.8)/4095).round(3)}"
-	$EEreportCnt +=1
+	sampleID = 0
+	
+	#if arr[7] == 0 
+	#	$EEreportCnt = 0
+	#end
+	
+	now = Time.now.to_i
+	if 	 now - 1 > $lastTimestamp
+		$EEreportCnt = 0
+	end
+	$lastTimestamp = now
+	
+	while sampleID < 64  do
+		plotdat.puts "#{$EEreportCnt+sampleID} #{((arr[27+sampleID]*70)/4095).round(3)} #{((arr[11+sampleID/4.floor] *34.8)/4095).round(3)}"
+		sampleID +=1
+	end
+	
+	$EEreportCnt +=64
 end
 
 
