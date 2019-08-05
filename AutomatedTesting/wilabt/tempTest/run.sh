@@ -8,6 +8,9 @@ HOSTNAME=`hostname`
 EXP=`echo $HOSTNAME | cut -d '.' -f 2`
 DATE=`date | sed -e 's/ /_/g'`
 
+sudo apt-get update
+sudo apt-get install -y python-serial
+
 sudo adduser `whoami` dialout
 groups
 
